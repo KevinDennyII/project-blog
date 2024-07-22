@@ -6,6 +6,16 @@ import styles from './postSlug.module.css';
 import { loadBlogPost } from "@/helpers/file-helpers";
 import { MDXRemote } from 'next-mdx-remote/rsc';
 
+export async function generateMetadata({ params }) {
+  const blogContent = await loadBlogPost(params.postSlug)
+  const {title, abstract } = blogContent.frontmatter;
+
+  return {
+    title,
+    description: abstract,
+  };
+}
+
 async function BlogPost({params}) {
 
   // grabbing params from dynamic routing

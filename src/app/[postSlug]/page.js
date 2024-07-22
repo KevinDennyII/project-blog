@@ -5,13 +5,14 @@ import BlogHero from '@/components/BlogHero';
 import styles from './postSlug.module.css';
 import { loadBlogPost } from "@/helpers/file-helpers";
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import {BLOG_TITLE} from "@/constants";
 
 export async function generateMetadata({ params }) {
   const blogContent = await loadBlogPost(params.postSlug)
   const {title, abstract } = blogContent.frontmatter;
 
   return {
-    title,
+    title: `${title} - ${BLOG_TITLE}`,
     description: abstract,
   };
 }

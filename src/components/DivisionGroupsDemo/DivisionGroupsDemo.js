@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import clsx from 'clsx';
+import { motion } from 'framer-motion';
 
 import { range } from '@/utils';
 import Card from '@/components/Card';
@@ -38,6 +39,12 @@ function DivisionGroupsDemo({
           gridTemplateRows: '1fr 1fr',
         };
 
+  const SPRING = {
+    type: 'spring',
+    stiffness: 900,
+    damping: 400,
+  };
+
   return (
     <Card as="section" className={styles.wrapper}>
       <header className={styles.header}>
@@ -54,8 +61,11 @@ function DivisionGroupsDemo({
         />
       </header>
 
-      <div className={styles.demoWrapper}>
-        <div
+      <div
+        className={styles.demoWrapper}>
+        <motion.div
+          layout={false}
+          transition={SPRING}
           className={clsx(styles.demoArea)}
           style={gridStructure}
         >
@@ -71,7 +81,7 @@ function DivisionGroupsDemo({
               })}
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {includeRemainderArea && (

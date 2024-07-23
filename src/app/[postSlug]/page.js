@@ -7,7 +7,7 @@ import styles from './postSlug.module.css';
 import { loadBlogPost } from "@/helpers/file-helpers";
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { BLOG_TITLE } from "@/constants";
-const DivisionGroupsDemo = React.lazy(() => import('@/components/DivisionGroupsDemo') );
+import DivisionGroupsDemo from "@/components/DivisionGroupsDemo";
 
 
 export async function generateMetadata({ params }) {

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import clsx from 'clsx';
-import { motion } from 'framer-motion';
+import { LayoutGroup, motion } from 'framer-motion';
 
 import { range } from '@/utils';
 import Card from '@/components/Card';
@@ -15,6 +15,7 @@ function DivisionGroupsDemo({
   initialNumOfGroups = 1,
   includeRemainderArea,
 }) {
+  const id = React.useId();
   const [numOfGroups, setNumOfGroups] = React.useState(
     initialNumOfGroups
   );
@@ -41,12 +42,13 @@ function DivisionGroupsDemo({
 
   const SPRING = {
     type: 'spring',
-    stiffness: 900,
-    damping: 400,
+    stiffness: 600,
+    damping: 100,
   };
 
   return (
-    <Card as="section" className={styles.wrapper}>
+    <LayoutGroup>
+      <Card as="section" className={styles.wrapper}>
       <header className={styles.header}>
         <SliderControl
           label="Number of Groups"
@@ -61,27 +63,26 @@ function DivisionGroupsDemo({
         />
       </header>
 
-      <div
-        className={styles.demoWrapper}>
-        <motion.div
-          layout={false}
-          transition={SPRING}
-          className={clsx(styles.demoArea)}
-          style={gridStructure}
+      <div className={styles.demoWrapper}>
+        <div className={clsx(styles.demoArea)} style={gridStructure}
         >
           {range(numOfGroups).map((groupIndex) => (
             <div key={groupIndex} className={styles.group}>
               {range(numOfItemsPerGroup).map((index) => {
+                const totalInPreviousGroups = groupIndex * numOfItemsPerGroup;
+                const layoutId = `${id}-${index + totalInPreviousGroups};`
                 return (
-                  <div
-                    key={index}
+                  <motion.div
+                    layoutId={layoutId}
+                    transition={SPRING}
+                    key={layoutId}
                     className={styles.item}
                   />
                 );
               })}
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {includeRemainderArea && (
@@ -104,6 +105,7 @@ function DivisionGroupsDemo({
         remainder={remainder}
       />
     </Card>
+    </LayoutGroup>
   );
 }
 

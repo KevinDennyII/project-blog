@@ -40,12 +40,6 @@ function DivisionGroupsDemo({
           gridTemplateRows: '1fr 1fr',
         };
 
-  const SPRING = {
-    type: 'spring',
-    stiffness: 600,
-    damping: 100,
-  };
-
   return (
     <LayoutGroup>
       <Card as="section" className={styles.wrapper}>
@@ -74,7 +68,6 @@ function DivisionGroupsDemo({
                 return (
                   <motion.div
                     layoutId={layoutId}
-                    transition={SPRING}
                     key={layoutId}
                     className={styles.item}
                   />
@@ -91,9 +84,14 @@ function DivisionGroupsDemo({
             Remainder Area
           </p>
 
-          {range(remainder).map((index) => {
+          {range(remainder).reverse().map((index) => {
+            const finalNumOfItems = numOfGroups * numOfItemsPerGroup;
+            const layoutId = `${id}-${index + finalNumOfItems}`
             return (
-              <div key={index} className={styles.item} />
+              <motion.div
+                key={layoutId}
+                className={styles.item}
+              />
             );
           })}
         </div>

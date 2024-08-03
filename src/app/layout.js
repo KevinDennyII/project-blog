@@ -1,4 +1,3 @@
-'use client'
 import React from 'react';
 import {
   Work_Sans,
@@ -6,12 +5,13 @@ import {
 } from 'next/font/google';
 import clsx from 'clsx';
 
-import { LIGHT_TOKENS, DARK_TOKENS } from '@/constants';
+import {BLOG_TITLE, LIGHT_TOKENS, DARK_TOKENS, COLOR_THEME_COOKIE} from '@/constants';
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import './styles.css';
 import RespectMotionPreferences from "@/components/RespectMotionPreferences";
+import {cookies} from "next/headers";
 
 const mainFont = Work_Sans({
   subsets: ['latin'],
@@ -26,9 +26,33 @@ const monoFont = Spline_Sans_Mono({
   variable: '--font-family-mono',
 });
 
+export const metadata = {
+  title: BLOG_TITLE,
+  description: 'A wonderful blog about JavaScript',
+};
+
 function RootLayout({ children }) {
   // TODO: Dynamic theme depending on user preference
-  const theme = 'light';
+  // setTheme because window object is not available until after initial render
+  // const [theme, setTheme] = React.useState('light');
+  // React.useEffect(() => {
+  //   const savedValue =
+  //     window.localStorage.getItem('color-theme');
+  //
+  //   if (savedValue) {
+  //     setTheme(savedValue);
+  //   }
+  // }, [])
+  //
+  // React.useEffect(() => {
+  //   window.localStorage.setItem(
+  //     'color-theme',
+  //     theme
+  //   );
+  // }, [theme]);
+
+  const savedTheme = cookies().get(COLOR_THEME_COOKIE);
+  const theme = savedTheme?.value || 'light';
 
   return (
     <RespectMotionPreferences>
@@ -39,7 +63,7 @@ function RootLayout({ children }) {
       style={theme === 'light' ? LIGHT_TOKENS : DARK_TOKENS}
     >
       <body>
-        <Header theme={theme} />
+        <Header initialTheme={theme}/>
         <main>{children}</main>
         <Footer />
       </body>

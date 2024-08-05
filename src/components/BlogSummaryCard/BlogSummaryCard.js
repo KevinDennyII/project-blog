@@ -20,6 +20,11 @@ function BlogSummaryCard({
 
   return (
     <Card className={styles.wrapper}>
+      {/* The prefetch prop instructs Next to pre-emptively fetch
+      the content for this link, and cache it.
+      When the user goes to click on the link,
+      the work has already been completed,
+      and the transition is instantaneous*/}
       <Link prefetch={true} href={href} className={styles.title}>
         {title}
       </Link>

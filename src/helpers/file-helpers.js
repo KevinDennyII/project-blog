@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import matter from 'gray-matter';
 import React from 'react';
+import {notFound} from "next/navigation";
 
 export async function getBlogPostList() {
   const fileNames = await readDirectory('/content');
@@ -27,6 +28,8 @@ export async function getBlogPostList() {
 }
 
 export const loadBlogPost = React.cache(async(slug) => {
+  await validPost(slug)
+
   const rawContent = await readFile(
     `/content/${slug}.mdx`
   );
@@ -49,4 +52,13 @@ function readDirectory(localPath) {
   return fs.readdir(
     path.join(process.cwd(), localPath)
   );
+}
+
+// checking if slug exists and returning notFound if it does not
+async function validPost(slug){
+  const blogPosts =  await getBlogPostList();
+  function postExist(post) {
+    return post.slug === slug;
+  }
+  if (!blogPosts.find(postExist)) notFound();
 }
